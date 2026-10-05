@@ -1,0 +1,9 @@
+> POST http://localhost:8081/api/v1/meter/getAll
+> Authorization: Bearer <token del operador>
+> Content-Type: application/json
+> {"filter":{"meter_id":"B-108"}}
+
+< HTTP 200 OK
+< content-type: application/json; charset=utf-8
+< {"page":1,"size":10,"count":1,"rows":[{"meter_id":"B-108","status":"ALERT","severity":"MEDIUM","anomaly_type":"DATA_QUALITY","priority":5,"consumption_kwh":240,"baseline_kwh":240,"variation_pct":0,"last_reading_at":"2026-09-14T23:00:00Z"}]}
+

@@ -1,0 +1,9 @@
+> POST http://localhost:8080/api/v1/meter/getAll
+> Authorization: Bearer <token del operador>
+> Content-Type: application/json
+> {"filter":{"meter_id":"m-109"}}
+
+< HTTP 200 OK
+< content-type: application/json; charset=utf-8
+< {"page":1,"size":10,"count":0,"rows":[]}
+

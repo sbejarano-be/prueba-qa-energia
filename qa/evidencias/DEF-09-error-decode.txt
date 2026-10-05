@@ -1,0 +1,8 @@
+> POST http://localhost:8080/api/v1/auth/login
+> Content-Type: application/json
+> {"email":1,"password":"x"}
+
+< HTTP 400 Bad Request
+< content-type: application/json; charset=utf-8
+< {"status_code":400,"message":"body inválido: json: cannot unmarshal number into Go struct field LoginRequest.email of type string","timestamp":"2026-10-02T23:19:32Z","path":"/api/v1/auth/login"}
+

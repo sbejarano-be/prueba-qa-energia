@@ -1,0 +1,9 @@
+> POST http://localhost:8080/api/v1/meter/getAll
+> Authorization: Bearer <token del operador>
+> Content-Type: application/json
+> {"pagination":{"page":-100,"size":10}}
+
+< HTTP 500 Internal Server Error
+< content-type: application/json; charset=utf-8
+< {"status_code":500,"message":"Error interno del servidor","timestamp":"2026-10-02T23:19:32Z","path":"/api/v1/meter/getAll"}
+

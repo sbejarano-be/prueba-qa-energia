@@ -1,0 +1,7 @@
+> GET http://localhost:8080/api/v1/meter/getAll
+> Authorization: Bearer <token del operador>
+
+< HTTP 404 Not Found
+< content-type: application/json; charset=utf-8
+< {"status_code":404,"message":"Ruta no encontrada","timestamp":"2026-10-02T23:19:32Z","path":"/api/v1/meter/getAll"}
+
