@@ -1,0 +1,73 @@
+# Levanta la app (backend Go + frontend Vite) con el webServer de Playwright y corre
+# la suite E2E/API en chromium, firefox y webkit. El reporte HTML (con trazas, videos y
+# capturas de los fallos) queda como artefacto del run.
+name: E2E · Playwright
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  e2e:
+    name: Suite E2E y API
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: e2e
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Go (backend)
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: backend/go.mod
+          cache-dependency-path: backend/go.sum
+
+      - name: pnpm (frontend)
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: e2e/package-lock.json
+
+      - name: Dependencias del frontend
+        run: pnpm --dir ../frontend install --frozen-lockfile
+
+      - name: Dependencias de la suite
+        run: npm ci
+
+      - name: Navegadores de Playwright
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Precompilar el backend (acelera el arranque de go run)
+        working-directory: backend
+        run: go build ./...
+
+      - name: Typecheck de la suite
+        run: npm run typecheck
+
+      - name: Correr la suite (smoke, API, UI en 3 navegadores, defectos conocidos)
+        run: npx playwright test
+        env:
+          CI: 'true'
+
+      - name: Publicar el reporte HTML
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: e2e/playwright-report/
+          retention-days: 14
