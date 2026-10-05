@@ -1,0 +1,26 @@
+{
+  "name": "energia-e2e",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Suite de pruebas E2E y de API de EnergIA con Playwright + TypeScript",
+  "scripts": {
+    "setup": "npm install && playwright install chromium firefox webkit && npm run setup:app",
+    "setup:app": "npx --yes pnpm@10 --dir ../frontend install --frozen-lockfile",
+    "generate:boundary-data": "node scripts/generate-boundary-data.mjs",
+    "test": "playwright test",
+    "test:smoke": "playwright test --grep @smoke",
+    "test:api": "playwright test --project=api",
+    "test:ui": "playwright test --project=chromium",
+    "test:defects": "playwright test --grep @defect",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^22.15.0",
+    "typescript": "^5.9.0"
+  },
+  "engines": {
+    "node": ">=20.19"
+  }
+}
